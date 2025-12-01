@@ -4,26 +4,26 @@ def call(Map config = [:]) {
     // 1️⃣ Validate required parameters
     // --------------------------------
     def required = [
+        "mode",
+        "target",
         "project_name",
         "component",
-        "mode",
         "git_latest_commit_id",
-        "output_report_format",
-        "target"
+        "output_report_format"
     ]
 
     required.each { key ->
         if (!config[key]) {
-            error "❌ Trivy: Missing required parameter '${key}'"
+            error "❌ TRIVY ${config.mode.toUpperCase()} SCAN: Missing required parameter '${key}'"
         }
     }
 
+    def mode                 = config.mode
+    def target               = config.target
     def project_name         = config.project_name
     def component            = config.component
-    def mode                 = config.mode
     def git_latest_commit_id = config.git_latest_commit_id
-    def format               = config.output_report_format
-    def target               = config.target
+    def output_report_format = config.output_report_format
 
     // -----------------------------------
     // 2️⃣ Determine proper file extension
@@ -33,7 +33,7 @@ def call(Map config = [:]) {
         "json" : "json",
         "sarif": "sarif",
         "yaml" : "yaml"
-    ][format] ?: format  // fallback to format if unknown
+    ][output_report_format] ?: format  // fallback to format if unknown
     
     def output_report = ""
     def outDir = "trivy-reports"
@@ -69,5 +69,5 @@ def call(Map config = [:]) {
     """
 
 
-    echo "✅ Trivy scan completed successfully. Report stored at: '${output_report}'"
+    echo "✅ Trivy scan completed successfully. Report stored at: '${env.WORKSPACE}/${output_report}'"
 }
