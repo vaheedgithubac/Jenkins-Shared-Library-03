@@ -21,10 +21,11 @@ def call(Map config = [:]) {
 					script {
 	   					GIT_LATEST_COMMIT_ID = getLatestCommitIdShort()
 	   					echo "GIT_LATEST_COMMIT_ID: ${GIT_LATEST_COMMIT_ID}"
+						 echo "env.GIT_LATEST_COMMIT_ID = ${env.GIT_LATEST_COMMIT_ID}"
 					}
 	   			}
 	   		}
-
+           /*
 		   stage("") {
 			   steps {
 				   script { 
@@ -32,7 +33,7 @@ def call(Map config = [:]) {
 					   echo "env.GIT_COMMIT = ${env.GIT_COMMIT.take(7).trim()}"}
 				       echo "env.GIT_LATEST_COMMIT_ID = ${GIT_LATEST_COMMIT_ID}"
 			   }
-	       }
+	       } */
 		   
 	   }  
 
