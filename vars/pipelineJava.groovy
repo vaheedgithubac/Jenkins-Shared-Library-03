@@ -54,7 +54,7 @@ def call(Map config = [:]) {
 					   			PROJECT_NAME:            config.PROJECT_NAME,
 					   			COMPONENT:               config.COMPONENT,
 					   			MY_GIT_LATEST_COMMIT_ID: MY_GIT_LATEST_COMMIT_ID,
-					   			OUPUT_REPORT_FORMAT:     config.TRIVY_FILE_SYSTEM_REPORT_FORMAT
+					   			OUTPUT_REPORT_FORMAT:     config.TRIVY_FILE_SYSTEM_REPORT_FORMAT
 					   		]
 					   		trivy_scan(trivy_file_params)
 					   	} else { echo "Skipping...STAGE - TRIVY FILE SYSTEM SCAN" }
@@ -82,7 +82,7 @@ def call(Map config = [:]) {
 		   stage("SONARQUBE QUALITY GATE") {
 		   		steps {
 		   			script {
-		   				if (config.EXECUTE_SONARSCAN_STAGE.toLowerCase()?.trim() == "yes") {
+		   				if (config.EXECUTE_SONAR_QG_STAGE.toLowerCase()?.trim() == "yes") {
 				   			echo "Running... SONARQUBE QUALITY GATE"
 					   		def sonarqube_params = [ TIMEOUT_MINUTES: config.TIMEOUT_MINUTES ]				  
 					   		sonarqubeQG(sonarqube_params)
@@ -127,7 +127,7 @@ def call(Map config = [:]) {
 					   			PROJECT_NAME:            config.PROJECT_NAME,
 					   			COMPONENT:               config.COMPONENT,
 					   			MY_GIT_LATEST_COMMIT_ID: MY_GIT_LATEST_COMMIT_ID,
-					   			OUPUT_REPORT_FORMAT:     config.TRIVY_IMAGE_REPORT_FORMAT
+					   			OUTPUT_REPORT_FORMAT:     config.TRIVY_IMAGE_REPORT_FORMAT
 					   		]
 					   		trivy_scan(trivy_image_params)
 					    } else { echo "Skipping... STAGE - DOCKER IMAGE SCAN - TRIVY" }
@@ -176,7 +176,7 @@ def call(Map config = [:]) {
 		   stage("DOCKER IMAGE UPLOAD - ECR") {
 		   		steps {
 		   			script {
-		   				if (config.EXECUTE_DOCKER_HUB_PUSH_STAGE.toLowerCase()?.trim() == "yes") {
+		   				if (config.EXECUTE_ECR_PUSH_STAGE.toLowerCase()?.trim() == "yes") {
 		   				echo "Running...DOCKER IMAGE UPLOAD - ECR"
 		   				def ecr_upload_params = [
 		   						DOCKER_IMAGE:       DOCKER_IMAGE,
