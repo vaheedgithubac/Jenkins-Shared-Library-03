@@ -148,8 +148,7 @@ def call(Map config = [:]) {
 					            NEXUS_GRP_ID:           config.NEXUS_GRP_ID,
 					            NEXUS_ARTIFACT_VERSION: "${MY_GIT_LATEST_COMMIT_ID}-${config.NEXUS_ARTIFACT_VERSION}",
 					            NEXUS_CREDENTIALS_ID:   config.NEXUS_CREDENTIALS_ID,
-								NEXUS_CREDENTIALS:      config.NEXUS_CREDENTIALS,
-					            NEXUS_BASE_REPO:        config.NEXUS_BASE_REPO
+								NEXUS_BASE_REPO:        config.NEXUS_BASE_REPO
           					]
           					nexusUpload(nexusParams)
 		   				}
