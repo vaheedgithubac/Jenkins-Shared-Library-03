@@ -29,7 +29,7 @@ def call(Map config = [:]) {
 	   		stage("JACOCO CODE COVERAGE") {
 	   			steps {
 	   				script {
-	   					if (EXECUTE_JACOCO_STAGE.toLowerCase()?.trim() == "yes") {
+	   					if (config.EXECUTE_JACOCO_STAGE.toLowerCase()?.trim() == "yes") {
 	   						echo "Running JACOCO CODE COVERAGE"
 	   						def jacoco_params = [
             					JACOCO_GROUPID:     config.JACOCO_GROUPID,
@@ -46,7 +46,7 @@ def call(Map config = [:]) {
 		   stage("TRIVY FILE SYSTEM SCAN") {
 			   steps {
 				   script { 
-				   		if (EXECUTE_TRIVY_FS_STAGE.toLowerCase()?.trim() == "yes") {
+				   		if (config.EXECUTE_TRIVY_FS_STAGE.toLowerCase()?.trim() == "yes") {
 				   			echo "Running... TRIVY FILE SYSTEM SCAN"
 					   		def trivy_file_params = [
 					   			MODE:                    "fs",
@@ -65,7 +65,7 @@ def call(Map config = [:]) {
 		   stage("SONARQUBE SCAN - SAST") {
 		   		steps {
 		   			script {
-		   				if (EXECUTE_SONARSCAN_STAGE.toLowerCase()?.trim() == "yes") {
+		   				if (config.EXECUTE_SONARSCAN_STAGE.toLowerCase()?.trim() == "yes") {
 				   			echo "Running... SONARQUBE SCAN - SAST"
 					   		def sonarqube_params = [
 					   			SONARQUBEAPI: config.SONARQUBEAPI,
@@ -82,7 +82,7 @@ def call(Map config = [:]) {
 		   stage("SONARQUBE QUALITY GATE") {
 		   		steps {
 		   			script {
-		   				if (EXECUTE_SONARSCAN_STAGE.toLowerCase()?.trim() == "yes") {
+		   				if (config.EXECUTE_SONARSCAN_STAGE.toLowerCase()?.trim() == "yes") {
 				   			echo "Running... SONARQUBE QUALITY GATE"
 					   		def sonarqube_params = [ config.TIMEOUT_MINUTES ]				  
 					   		sonarqubeQG(sonarqube_params)
@@ -95,7 +95,7 @@ def call(Map config = [:]) {
 		   stage("MAVEN BUILD") {
 		   		steps {
 		   			script {
-		   				if (EXECUTE_MAVEN_STAGE.toLowerCase()?.trim() == "yes") {
+		   				if (config.EXECUTE_MAVEN_STAGE.toLowerCase()?.trim() == "yes") {
 		   					echo "Running... MAVEN BUILD"
 		   					def maven_params = [ MAVEN_SKIP_TESTS: config.MAVEN_SKIP_TESTS ]
 		   					mavenBuild(maven_params)
@@ -107,7 +107,7 @@ def call(Map config = [:]) {
 		   stage("BUILD DOCKER IMAGE") {
 		   		steps {
 		   			script {
-		   				if (EXECUTE_DOCKER_IMAGE_BUILD_STAGE.toLowerCase()?.trim() == "yes") {
+		   				if (config.EXECUTE_DOCKER_IMAGE_BUILD_STAGE.toLowerCase()?.trim() == "yes") {
 		   					echo "Running...BUILD DOCKER IMAGE"
 		   					DOCKER_IMAGE = dockerImageBuild()
 		   					echo "IMAGE BUILT SUCCESSFULLY: ${IMAGE}"
@@ -119,7 +119,7 @@ def call(Map config = [:]) {
 		   stage("DOCKER IMAGE SCAN - TRIVY") {
 		   		steps {
 		   			script {
-		   				if (EXECUTE_TRIVY_IMAGE_STAGE.toLowerCase()?.trim() == "yes") {
+		   				if (config.EXECUTE_TRIVY_IMAGE_STAGE.toLowerCase()?.trim() == "yes") {
 		   					echo ("Running...DOCKER IMAGE SCAN - TRIVY")
 		   					def trivy_image_params = [
 					   			MODE:                    "image",
@@ -138,7 +138,7 @@ def call(Map config = [:]) {
 		   stage("NEXUS ARTIFACT UPLOAD") {
 		   		steps {
 		   			script {
-		   				if (EXECUTE_NEXUS_STAGE.toLowerCase()?.trim() == "yes") {
+		   				if (config.EXECUTE_NEXUS_STAGE.toLowerCase()?.trim() == "yes") {
 		   					echo "Running...NEXUS ARTIFACT UPLOAD"
 		   					def nexusParams = [
 					            NEXUS_VERSION:          config.NEXUS_VERSION,
@@ -160,7 +160,7 @@ def call(Map config = [:]) {
 		   stage("DOCKER IMAGE UPLOAD - DOCKER HUB") {
 		   		steps {
 		   			script {
-                        if (EXECUTE_DOCKER_HUB_PUSH_STAGE.toLowerCase()?.trim() == "yes") {
+                        if (config.EXECUTE_DOCKER_HUB_PUSH_STAGE.toLowerCase()?.trim() == "yes") {
 		   					echo "Running...DOCKER IMAGE UPLOAD - DOCKER HUB"
 		   					def dockerhub_upload_params = [
 		   						DOCKER_IMAGE:              DOCKER_IMAGE,
@@ -176,7 +176,7 @@ def call(Map config = [:]) {
 		   stage("DOCKER IMAGE UPLOAD - ECR") {
 		   		steps {
 		   			script {
-		   				if (EXECUTE_DOCKER_HUB_PUSH_STAGE.toLowerCase()?.trim() == "yes") {
+		   				if (config.EXECUTE_DOCKER_HUB_PUSH_STAGE.toLowerCase()?.trim() == "yes") {
 		   				echo "Running...DOCKER IMAGE UPLOAD - ECR"
 		   				def ecr_upload_params = [
 		   						DOCKER_IMAGE:       DOCKER_IMAGE,
@@ -196,7 +196,7 @@ def call(Map config = [:]) {
 	   post {
 	   		always {
 	   			script {
-	   				if (EXECUTE_EMAIL_STAGE.toLowerCase()?.trim() == "yes") {
+	   				if (config.EXECUTE_EMAIL_STAGE.toLowerCase()?.trim() == "yes") {
 	   					echo "Sending Email"
 	   					def emailParams = [
 			                 JOB_NAME:        config.JOB_NAME,
