@@ -18,7 +18,7 @@ def call(Map config = [:]) {
 
         stages {
 
-            stage(") {
+            stage("GIT CHECKOUT") {
                 steps {
                     script { gitCheckout() }
                 }
