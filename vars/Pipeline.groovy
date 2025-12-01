@@ -27,7 +27,7 @@ def call(Map config = [:]) {
 
 		   stage("") {
 			   steps {
-				   script { echo "env.GIT_COMMIT = ${env.GIT_COMMIT}"}
+				   script { echo "env.GIT_COMMIT = ${env.GIT_COMMIT.take(7).trim()}"}
 			   }
 	       }
 		   
