@@ -17,6 +17,7 @@ def call(Map config = [:]) {
 
         stages {
 
+            /*
             stage("SET AND PRINT LATEST COMMIT ID") {
                 steps {
                     script {
@@ -24,7 +25,7 @@ def call(Map config = [:]) {
                         echo "MY_GIT_LATEST_COMMIT_ID: ${MY_GIT_LATEST_COMMIT_ID}"
                     }
                 }
-            }
+            }*/
 
             stage("JACOCO CODE COVERAGE") {
                 when { expression { config.EXECUTE_JACOCO_STAGE == "yes" } }
