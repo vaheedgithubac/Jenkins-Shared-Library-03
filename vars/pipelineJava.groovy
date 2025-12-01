@@ -200,16 +200,16 @@ def call(Map config = [:]) {
 	   				if (config.EXECUTE_EMAIL_STAGE.toLowerCase()?.trim() == "yes") {
 	   					echo "Sending Email"
 	   					def emailParams = [
-			                 JOB_NAME:        config.JOB_NAME,
-			                 BUILD_NUMBER:    config.BUILD_NUMBER,
-			                 BUILD_URL:       config.BUILD_URL,
-			                 BRANCH_NAME:     config.BRANCH_NAME,
+			                 JOB_NAME:        env.JOB_NAME,
+			                 BUILD_NUMBER:    env.BUILD_NUMBER,
+			                 BUILD_URL:       env.BUILD_URL,
+			                 BRANCH_NAME:     env.BRANCH_NAME,
 			                 PIPELINE_STATUS: currentBuild.currentResult,
 			                 DURATION:        currentBuild.durationString,
 			                 FROM_MAIL:       config.FROM_MAIL,
 			                 TO_MAIL:         config.TO_MAIL,
 			                 REPLY_TO_MAIL:   config.REPLY_TO_MAIL,
-			                 CC_MAIL:         env.CC_MAIL,
+			                 CC_MAIL:         config.CC_MAIL,
 			                 BCC_MAIL:        config.BCC_MAIL,
 			                 ATTACHMENTS:     config.ATTACHMENTS                      // "trivy-reports/*, owasp-reports/*"
 			            ]               
