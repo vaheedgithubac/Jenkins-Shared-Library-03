@@ -71,7 +71,7 @@ def call(Map config = [:]) {
                 type: pom_packaging]
             ]
         )
-        echo "✅ Nexus upload Successfully complete."
+        echo "✅ Nexus upload successfully completed"
     } 
     else { error "❌*** File: ${artifactPath}, could not be found" }
 }
