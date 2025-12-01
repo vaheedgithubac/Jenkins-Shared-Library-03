@@ -88,15 +88,15 @@ def call(Map config = [:]) {
   // Send Email
 
   emailext(
-      subject: "${jobName} - Build #${buildNumber} - ${pipelineStatus.toUpperCase()}",
-      body: body,
-      mimeType: "text/html",
-      to: toMail,
-      from: fromMail,
-      replyTo: replyToMail,
-      cc: ccMail,
-      bcc: bccMail,
-      attachmentsPattern: attachments
+    subject: "${jobName} - Build #${buildNumber} - ${pipelineStatus.toUpperCase()}",
+    body: body,
+    mimeType: "text/html",
+    to: toMail,
+    from: fromMail,
+    replyTo: replyToMail,
+    cc: ccMail,
+    bcc: bccMail,
+    attachmentsPattern: attachments
   )
 
   echo "Email successfully sent"
