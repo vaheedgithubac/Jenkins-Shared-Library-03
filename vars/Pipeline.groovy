@@ -30,8 +30,9 @@ def call(Map config = [:]) {
 			   steps {
 				   script { 
 					   echo "env.GIT_LATEST_COMMIT_ID = ${GIT_LATEST_COMMIT_ID}"
-			   }
-	       } 
+			       }
+	           }
+		  }
 		   
 	   }  
 
