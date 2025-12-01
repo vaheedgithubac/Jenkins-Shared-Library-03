@@ -67,7 +67,5 @@ def call(Map config = [:]) {
             --severity MEDIUM,HIGH,CRITICAL \
             .   
     """
-
-
     echo "✅ Trivy scan completed successfully. Report stored at: '${env.WORKSPACE}/${output_report}'"
 }
