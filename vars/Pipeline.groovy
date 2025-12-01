@@ -24,7 +24,12 @@ def call(Map config = [:]) {
 					}
 	   			}
 	   		}
-	   }
+
+		   stage("") {
+			   steps {
+				   script { echo "env.GIT_COMMIT = ${env.GIT_COMMIT}"}
+			   }
+	       }
 
 
 		
