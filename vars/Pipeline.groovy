@@ -19,8 +19,8 @@ def call(Map config = [:]) {
 	   		stage("LATEST COMMIT ID") {
 	   			steps {
 					script {
-	   					env.GIT_LATEST_COMMIT_ID = getLatestCommitIdShort()
-	   					echo "GIT_LATEST_COMMIT_ID: ${env.GIT_LATEST_COMMIT_ID}"
+	   					GIT_LATEST_COMMIT_ID = getLatestCommitIdShort()
+	   					echo "GIT_LATEST_COMMIT_ID: ${GIT_LATEST_COMMIT_ID}"
 					}
 	   			}
 	   		}
