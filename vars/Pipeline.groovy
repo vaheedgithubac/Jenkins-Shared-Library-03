@@ -27,7 +27,10 @@ def call(Map config = [:]) {
 
 		   stage("") {
 			   steps {
-				   script { echo "env.GIT_COMMIT = ${env.GIT_COMMIT.take(7).trim()}"}
+				   script { 
+					   env.GIT_LATEST_COMMIT_ID = env.GIT_COMMIT.take(7).trim()
+					   echo "env.GIT_COMMIT = ${env.GIT_COMMIT.take(7).trim()}"}
+				       echo "env.GIT_LATEST_COMMIT_ID = ${env.GIT_LATEST_COMMIT_ID}"
 			   }
 	       }
 		   
