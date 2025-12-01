@@ -30,7 +30,8 @@ def call(Map config = [:]) {
 				   script { echo "env.GIT_COMMIT = ${env.GIT_COMMIT}"}
 			   }
 	       }
-
+		   
+	   }  
 
 		
     }
