@@ -1,7 +1,7 @@
 def call(Map config = [:]) {
     
-    echo "MY_GIT_URL: ${env.MY_GIT_URL}"
-    echo "MY_GIT_REPO_TYPE: ${env.MY_GIT_REPO_TYPE}"
+    echo "MY_GIT_URL: ${config.MY_GIT_URL}"
+    echo "MY_GIT_REPO_TYPE: ${config.MY_GIT_REPO_TYPE}"
     
     // Required ENV parameters
     def requiredEnvParams = [ "MY_GIT_URL", "MY_GIT_REPO_TYPE" ]
@@ -13,12 +13,12 @@ def call(Map config = [:]) {
         }
     }
  
-    def my_git_repo_type = env.MY_GIT_REPO_TYPE.toLowerCase().trim()
-    def my_git_url       = env.MY_GIT_URL.trim()
+    def my_git_repo_type = config.MY_GIT_REPO_TYPE.toLowerCase().trim()
+    def my_git_url       = config.MY_GIT_URL.trim()
     
     // Set defaults for optional    
-    def my_git_branch    = env.MY_GIT_BRANCH ?: 'main'
-    def my_git_credentials_id = env.MY_GIT_CREDENTIALS_ID ?: null
+    def my_git_branch    = config.MY_GIT_BRANCH ?: 'main'
+    def my_git_credentials_id = config.MY_GIT_CREDENTIALS_ID ?: null
     
 
    
