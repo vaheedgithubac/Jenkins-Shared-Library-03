@@ -18,11 +18,16 @@ def call(Map config = [:]) {
 	   		
 	   		stage("LATEST COMMIT ID") {
 	   			steps {
-	   				GIT_LATEST_COMMIT_ID = getLatestCommitIdShort()
-	   				echo "GIT_LATEST_COMMIT_ID: ${GIT_LATEST_COMMIT_ID}"
+					script {
+	   					GIT_LATEST_COMMIT_ID = getLatestCommitIdShort()
+	   					echo "GIT_LATEST_COMMIT_ID: ${GIT_LATEST_COMMIT_ID}"
+					}
 	   			}
 	   		}
 	   }
+
+
+		
     }
 
 }
