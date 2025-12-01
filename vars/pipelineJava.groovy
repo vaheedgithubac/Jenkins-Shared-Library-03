@@ -84,7 +84,7 @@ def call(Map config = [:]) {
 		   			script {
 		   				if (config.EXECUTE_SONARSCAN_STAGE.toLowerCase()?.trim() == "yes") {
 				   			echo "Running... SONARQUBE QUALITY GATE"
-					   		def sonarqube_params = [ config.TIMEOUT_MINUTES ]				  
+					   		def sonarqube_params = [ TIMEOUT_MINUTES: config.TIMEOUT_MINUTES ]				  
 					   		sonarqubeQG(sonarqube_params)
 					   	} else { echo "Skipping...STAGE - SONARQUBE QUALITY GATE" }
 
@@ -110,7 +110,7 @@ def call(Map config = [:]) {
 		   				if (config.EXECUTE_DOCKER_IMAGE_BUILD_STAGE.toLowerCase()?.trim() == "yes") {
 		   					echo "Running...BUILD DOCKER IMAGE"
 		   					DOCKER_IMAGE = dockerImageBuild()
-		   					echo "IMAGE BUILT SUCCESSFULLY: ${IMAGE}"
+		   					echo "IMAGE BUILT SUCCESSFULLY: ${DOCKER_IMAGE}"
 		   				} else { echo "Skipping... STAGE - BUILD DOCKER IMAGE" }
 		   			}
 		   		}
@@ -148,6 +148,7 @@ def call(Map config = [:]) {
 					            NEXUS_GRP_ID:           config.NEXUS_GRP_ID,
 					            NEXUS_ARTIFACT_VERSION: "${MY_GIT_LATEST_COMMIT_ID}-${config.NEXUS_ARTIFACT_VERSION}",
 					            NEXUS_CREDENTIALS_ID:   config.NEXUS_CREDENTIALS_ID,
+								NEXUS_CREDENTIALS:      config.NEXUS_CREDENTIALS,
 					            NEXUS_BASE_REPO:        config.NEXUS_BASE_REPO
           					]
           					nexusUpload(nexusParams)
