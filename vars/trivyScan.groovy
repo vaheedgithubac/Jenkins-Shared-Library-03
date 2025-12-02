@@ -33,7 +33,7 @@ def call(Map config = [:]) {
         "json" : "json",
         "sarif": "sarif",
         "yaml" : "yaml"
-    ][output_report_format] ?: format  // fallback to 'format' if unknown
+    ][output_report_format] ?: output_report_format  // fallback to 'output_report_format' if unknown
     
     def output_report = ""
     def outDir        = "trivy-reports"
