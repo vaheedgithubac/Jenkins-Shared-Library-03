@@ -168,7 +168,7 @@ def call(Map config = [:]) {
 								NEXUS_BASE_REPO:        config.NEXUS_BASE_REPO
           					]
           					nexusUpload(nexusParams)
-		   				}  else { echo "Skipping... STAGE - NEXUS ARTIFACT UPLOAD MY_GIT_LATEST_COMMIT_ID: ${MY_GIT_LATEST_COMMIT_ID} NEXUS_USER: ${env.NEXUS_USER} NEXUS_PASSWORD: ${env.NEXUS_PASSWORD}"}	
+		   				}  else { echo "Skipping... STAGE - NEXUS ARTIFACT UPLOAD"}	
 		   			}
 		   		}
 		    }
@@ -184,7 +184,7 @@ def call(Map config = [:]) {
 		   						DOCKER_HUB_CREDENTIALS_ID: config.DOCKER_HUB_CREDENTIALS_ID
 		   					]
 		   					dockerPush(dockerhub_upload_params)
-		   				} else { echo "Skipping... STAGE - DOCKER IMAGE UPLOAD - DOCKER HUB" }
+		   				} else { echo "Skipping... STAGE - DOCKER IMAGE UPLOAD - DOCKER HUB MY_GIT_LATEST_COMMIT_ID: ${MY_GIT_LATEST_COMMIT_ID} NEXUS_USER: ${env.NEXUS_USER} NEXUS_PASSWORD: ${env.NEXUS_PASSWORD}" }
 		   			}
 		   		}
 		    }
