@@ -13,7 +13,7 @@ def call(Map config = [:]) {
        environment {
 			MY_GIT_LATEST_COMMIT_ID = ''
 			DOCKER_IMAGE = ''   
-		    NEXUS_CREDENTIALS = ${credentials(config.NEXUS_CREDENTIALS_ID)} ?: ""
+		    // NEXUS_CREDENTIALS = ${credentials(config.NEXUS_CREDENTIALS_ID)} ?: ""
 		    NEXUS_USER = ''
 		    NEXUS_PASSWORD = ''
 			NEXUS_ARTIFACT_VERSION = "${BUILD_ID}-${BUILD_TIMESTAMP}"  
@@ -143,7 +143,20 @@ def call(Map config = [:]) {
 		   		steps {
 		   			script {
 		   				if (config.EXECUTE_NEXUS_STAGE.toLowerCase()?.trim() == "yes") {
-		   					echo "Running...NEXUS ARTIFACT UPLOAD"
+		   					if (configMap.NEXUS_CREDENTIALS_ID?.trim()) {
+    							echo "Nexus credentials ID is provided: ${configMap.NEXUS_CREDENTIALS_ID}"
+		   						withCredentials([usernamePassword(
+                            		credentialsId: configMap.NEXUS_CREDENTIALS_ID, 
+                            		usernameVariable: 'nexus_user', 
+                            		passwordVariable: 'nexus_password'
+                            	)]) {
+                            			//Assign to ENV variables
+                            			NEXUS_USER = nexus_user
+                            			NEXUS_PASSWORD = nexus_password
+                               	}
+                            }
+                            
+                            echo "Running...NEXUS ARTIFACT UPLOAD"
 		   					def nexusParams = [
 					            NEXUS_VERSION:          config.NEXUS_VERSION,
 					            NEXUS_PROTOCOL:         config.NEXUS_PROTOCOL,
@@ -155,8 +168,7 @@ def call(Map config = [:]) {
 								NEXUS_BASE_REPO:        config.NEXUS_BASE_REPO
           					]
           					nexusUpload(nexusParams)
-		   				}
-		   				
+		   				}  else { echo "Skipping... STAGE - NEXUS ARTIFACT UPLOAD" }	
 		   			}
 		   		}
 		    }
