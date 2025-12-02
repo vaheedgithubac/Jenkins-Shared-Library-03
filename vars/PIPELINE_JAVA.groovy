@@ -53,11 +53,12 @@ def call(Map config = [:]) {
 				   			echo "Running... TRIVY FILE SYSTEM SCAN"
 					   		trivyScan([
 					   			MODE:                    "fs",
-					   			TARGET:                  config.FS_TARGET,  // current directory
+					   			TARGET:                  config.TRIVY_FS_TARGET,
+								SCAN_FORMAT:             config.TRIVY_FS_SCAN_FORMAT,
+								OUTPUT_FORMAT:           config.TRIVY_FS_OUTPUT_FORMAT,
 					   			PROJECT_NAME:            config.PROJECT_NAME,
 					   			COMPONENT:               config.COMPONENT,
-					   			MY_GIT_LATEST_COMMIT_ID: env.MY_GIT_LATEST_COMMIT_ID,
-					   			OUTPUT_REPORT_FORMAT:    config.TRIVY_FILE_SYSTEM_REPORT_FORMAT
+					   			MY_GIT_LATEST_COMMIT_ID: env.MY_GIT_LATEST_COMMIT_ID	
 					   		])
 					   	} else { echo "Skipping...STAGE - TRIVY FILE SYSTEM SCAN" }
 			       	}
@@ -126,11 +127,12 @@ def call(Map config = [:]) {
 		   					echo ("Running...DOCKER IMAGE SCAN - TRIVY")
 		   					trivyScan([
 					   			MODE:                    "image",
-					   			TARGET:                  DOCKER_IMAGE,  
+					   			TARGET:                  DOCKER_IMAGE,
+								SCAN_FORMAT:             config.TRIVY_IMAGE_SCAN_FORMAT,
+								OUTPUT_FORMAT:           config.TRIVY_IMAGE_OUTPUT_FORMAT,
 					   			PROJECT_NAME:            config.PROJECT_NAME,
 					   			COMPONENT:               config.COMPONENT,
-					   			MY_GIT_LATEST_COMMIT_ID: env.MY_GIT_LATEST_COMMIT_ID,
-					   			OUTPUT_REPORT_FORMAT:    config.TRIVY_IMAGE_REPORT_FORMAT
+					   			MY_GIT_LATEST_COMMIT_ID: env.MY_GIT_LATEST_COMMIT_ID
 					   		])
 					    } else { echo "Skipping... STAGE - DOCKER IMAGE SCAN - TRIVY" }
 		   			}
