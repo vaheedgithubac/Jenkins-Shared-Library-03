@@ -12,7 +12,7 @@ def call(Map config = [:]) {
         }
 
        environment {
-			MY_GIT_LATEST_COMMIT_ID = ''
+			// MY_GIT_LATEST_COMMIT_ID = ''
 			DOCKER_IMAGE = ''   
 		    NEXUS_ARTIFACT_VERSION = "${BUILD_ID}-${BUILD_TIMESTAMP}"  
 	   }
@@ -23,7 +23,9 @@ def call(Map config = [:]) {
 	   			steps {
 					script {
 	   					//env.MY_GIT_LATEST_COMMIT_ID = getLatestCommitIdShort() ( To get this work, you should not declare a variable under pipeline environment{} block )
-						MY_GIT_LATEST_COMMIT_ID = getLatestCommitIdShort()
+						// MY_GIT_LATEST_COMMIT_ID = getLatestCommitIdShort()
+						
+						MY_GIT_LATEST_COMMIT_ID = env.GIT_COMMIT.take(7)
 	   					echo "MY_GIT_LATEST_COMMIT_ID: ${MY_GIT_LATEST_COMMIT_ID}"	
 					}
 	   			}
