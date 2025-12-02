@@ -12,7 +12,9 @@ def call(Map config = [:]) {
 
        environment {
 			MY_GIT_LATEST_COMMIT_ID = ''
-			DOCKER_IMAGE = ''            
+			DOCKER_IMAGE = ''   
+		    NEXUS_CREDENTIALS = credentials('nexus-creds')
+			NEXUS_ARTIFACT_VERSION = "${BUILD_ID}-${BUILD_TIMESTAMP}"  
 	   }
 
 	   stages {
@@ -146,7 +148,7 @@ def call(Map config = [:]) {
 					            NEXUS_HOST:             config.NEXUS_HOST,
 					            NEXUS_PORT:             config.NEXUS_PORT,
 					            NEXUS_GRP_ID:           config.NEXUS_GRP_ID,
-					            NEXUS_ARTIFACT_VERSION: "${MY_GIT_LATEST_COMMIT_ID}-${config.NEXUS_ARTIFACT_VERSION}",
+					            NEXUS_ARTIFACT_VERSION: "${MY_GIT_LATEST_COMMIT_ID}-${NEXUS_ARTIFACT_VERSION}",
 					            NEXUS_CREDENTIALS_ID:   config.NEXUS_CREDENTIALS_ID,
 								NEXUS_BASE_REPO:        config.NEXUS_BASE_REPO
           					]
