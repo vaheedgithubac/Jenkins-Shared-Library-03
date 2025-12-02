@@ -12,7 +12,6 @@ def call(Map config = [:]) {
         }
 
        environment {
-			// MY_GIT_LATEST_COMMIT_ID = ''
 			DOCKER_IMAGE = ''   
 		    NEXUS_ARTIFACT_VERSION = "${BUILD_ID}-${BUILD_TIMESTAMP}"  
 	   }
@@ -25,8 +24,8 @@ def call(Map config = [:]) {
 	   					//env.MY_GIT_LATEST_COMMIT_ID = getLatestCommitIdShort() ( To get this work, you should not declare a variable under pipeline environment{} block )
 						// MY_GIT_LATEST_COMMIT_ID = getLatestCommitIdShort()
 						
-						MY_GIT_LATEST_COMMIT_ID = env.GIT_COMMIT.take(7)
-	   					echo "MY_GIT_LATEST_COMMIT_ID: ${MY_GIT_LATEST_COMMIT_ID}"	
+						env.MY_GIT_LATEST_COMMIT_ID = env.GIT_COMMIT.take(7)
+	   					echo "MY_GIT_LATEST_COMMIT_ID: ${env.MY_GIT_LATEST_COMMIT_ID}"	
 					}
 	   			}
 	   		}
@@ -58,7 +57,7 @@ def call(Map config = [:]) {
 					   			TARGET:                  config.FS_TARGET,  // current directory
 					   			PROJECT_NAME:            config.PROJECT_NAME,
 					   			COMPONENT:               config.COMPONENT,
-					   			MY_GIT_LATEST_COMMIT_ID: MY_GIT_LATEST_COMMIT_ID,
+					   			MY_GIT_LATEST_COMMIT_ID: env.MY_GIT_LATEST_COMMIT_ID,
 					   			OUTPUT_REPORT_FORMAT:    config.TRIVY_FILE_SYSTEM_REPORT_FORMAT
 					   		])
 					   	} else { echo "Skipping...STAGE - TRIVY FILE SYSTEM SCAN" }
@@ -113,7 +112,7 @@ def call(Map config = [:]) {
 		   					DOCKER_IMAGE = dockerImageBuild([
 		   						PROJECT_NAME: 			 config.PROJECT_NAME,
 		   						COMPONENT: 				 config.COMPONENT,
-		   						MY_GIT_LATEST_COMMIT_ID: MY_GIT_LATEST_COMMIT_ID
+		   						MY_GIT_LATEST_COMMIT_ID: env.MY_GIT_LATEST_COMMIT_ID
 		   					])
 		   					echo "IMAGE BUILT SUCCESSFULLY: ${DOCKER_IMAGE}"
 		   				} else { echo "Skipping... STAGE - BUILD DOCKER IMAGE" }
@@ -131,7 +130,7 @@ def call(Map config = [:]) {
 					   			TARGET:                  DOCKER_IMAGE,  
 					   			PROJECT_NAME:            config.PROJECT_NAME,
 					   			COMPONENT:               config.COMPONENT,
-					   			MY_GIT_LATEST_COMMIT_ID: MY_GIT_LATEST_COMMIT_ID,
+					   			MY_GIT_LATEST_COMMIT_ID: env.MY_GIT_LATEST_COMMIT_ID,
 					   			OUTPUT_REPORT_FORMAT:    config.TRIVY_IMAGE_REPORT_FORMAT
 					   		])
 					    } else { echo "Skipping... STAGE - DOCKER IMAGE SCAN - TRIVY" }
@@ -163,7 +162,7 @@ def call(Map config = [:]) {
 					            NEXUS_HOST:             config.NEXUS_HOST,
 					            NEXUS_PORT:             config.NEXUS_PORT,
 					            NEXUS_GRP_ID:           config.NEXUS_GRP_ID,
-					            NEXUS_ARTIFACT_VERSION: "${MY_GIT_LATEST_COMMIT_ID}-${NEXUS_ARTIFACT_VERSION}",
+					            NEXUS_ARTIFACT_VERSION: "${env.MY_GIT_LATEST_COMMIT_ID}-${NEXUS_ARTIFACT_VERSION}",
 					            NEXUS_CREDENTIALS_ID:   config.NEXUS_CREDENTIALS_ID,
 								NEXUS_BASE_REPO:        config.NEXUS_BASE_REPO
           					])
