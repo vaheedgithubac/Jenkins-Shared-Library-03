@@ -24,8 +24,9 @@ def call(Map config = [:]) {
 	   		stage("SET AND PRINT LATEST COMMIT ID") {
 	   			steps {
 					script {
-	   					env.MY_GIT_LATEST_COMMIT_ID = getLatestCommitIdShort()
-	   					echo "MY_GIT_LATEST_COMMIT_ID: ${env.MY_GIT_LATEST_COMMIT_ID}"	
+	   					//env.MY_GIT_LATEST_COMMIT_ID = getLatestCommitIdShort() ( To get this work, you should not declare a variable under pipeline environment{} block )
+						MY_GIT_LATEST_COMMIT_ID = getLatestCommitIdShort()
+	   					echo "MY_GIT_LATEST_COMMIT_ID: ${MY_GIT_LATEST_COMMIT_ID}"	
 					}
 	   			}
 	   		}
