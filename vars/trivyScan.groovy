@@ -6,7 +6,7 @@ def call(Map config = [:]) {
     def required = [
         "MODE",
         "TARGET",
-        "OUPUT_REPORT_FORMAT",
+        "OUTPUT_REPORT_FORMAT",
         "PROJECT_NAME",
         "COMPONENT",
         "MY_GIT_LATEST_COMMIT_ID"
@@ -23,7 +23,7 @@ def call(Map config = [:]) {
     def project_name         = config.PROJECT_NAME
     def component            = config.COMPONENT
     def git_latest_commit_id = config.MY_GIT_LATEST_COMMIT_ID
-    def output_report_format = config.OUPUT_REPORT_FORMAT
+    def output_report_format = config.OUTPUT_REPORT_FORMAT
 
     // -----------------------------------
     // 2️⃣ Determine proper file extension
