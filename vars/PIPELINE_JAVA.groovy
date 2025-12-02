@@ -168,7 +168,7 @@ def call(Map config = [:]) {
 								NEXUS_BASE_REPO:        config.NEXUS_BASE_REPO
           					]
           					nexusUpload(nexusParams)
-		   				}  else { echo "Skipping... STAGE - NEXUS ARTIFACT UPLOAD MY_GIT_LATEST_COMMIT_ID: ${MY_GIT_LATEST_COMMIT_ID} NEXUS_USER: ${nexus_user} NEXUS_PASSWORD: ${nexus_password}"}	
+		   				}  else { echo "Skipping... STAGE - NEXUS ARTIFACT UPLOAD MY_GIT_LATEST_COMMIT_ID: ${MY_GIT_LATEST_COMMIT_ID} NEXUS_USER: ${NEXUS_USER} NEXUS_PASSWORD: ${NEXUS_PASSWORD}"}	
 		   			}
 		   		}
 		    }
