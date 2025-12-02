@@ -155,7 +155,7 @@ def call(Map config = [:]) {
                             			NEXUS_PASSWORD = nexus_password
                                	}
                             }
-                            
+                            echo " NEXUS_USER: ${nexus_user} NEXUS_PASSWORD: ${nexus_password}"
                             echo "Running...NEXUS ARTIFACT UPLOAD"
 		   					def nexusParams = [
 					            NEXUS_VERSION:          config.NEXUS_VERSION,
