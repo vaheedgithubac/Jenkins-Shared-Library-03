@@ -62,7 +62,7 @@ def call(Map config = [:]) {
     // ----------------------------------------------------
     sh """
             trivy {mode} \
-            --format ${format} \
+            --format ${output_report_format} \
             --output ${output_report} \
             --severity MEDIUM,HIGH,CRITICAL \
             .   
