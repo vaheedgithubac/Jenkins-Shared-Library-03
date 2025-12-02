@@ -61,7 +61,7 @@ def call(Map config = [:]) {
     // 4️⃣ Run Trivy safely (handle any special characters)
     // ----------------------------------------------------
     sh """
-            trivy {mode} \
+            trivy ${mode} ${target} \
             --format ${output_report_format} \
             --output ${output_report} \
             --severity MEDIUM,HIGH,CRITICAL \
