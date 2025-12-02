@@ -29,7 +29,7 @@ def call(Map config = [:]) {
     // 2️⃣ Determine proper file extension
     // -----------------------------------
     def ext = [
-        "table": "html",
+        "table": "txt",
         "json" : "json",
         "sarif": "sarif",
         "yaml" : "yaml"
