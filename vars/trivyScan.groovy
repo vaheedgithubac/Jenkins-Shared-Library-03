@@ -61,11 +61,11 @@ def call(Map config = [:]) {
     // 4️⃣ Run Trivy safely (handle any special characters)
     // ----------------------------------------------------
     sh """
-            trivy ${mode} ${target} \
+            trivy ${mode}  \
             --format ${output_report_format} \
             --output ${output_report} \
             --severity MEDIUM,HIGH,CRITICAL \
-            .   
+            ${target}   
     """
     echo "✅ Trivy scan completed successfully. Report stored at: '${env.WORKSPACE}/${output_report}'"
 }
