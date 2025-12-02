@@ -13,7 +13,9 @@ def call(Map config = [:]) {
        environment {
 			MY_GIT_LATEST_COMMIT_ID = ''
 			DOCKER_IMAGE = ''   
-		    NEXUS_CREDENTIALS = credentials('nexus-creds')
+		    NEXUS_CREDENTIALS = credentials(config.NEXUS_CREDENTIALS_ID) ?: null
+		    NEXUS_USER = ''
+		    NEXUS_PASSWORD = ''
 			NEXUS_ARTIFACT_VERSION = "${BUILD_ID}-${BUILD_TIMESTAMP}"  
 	   }
 
