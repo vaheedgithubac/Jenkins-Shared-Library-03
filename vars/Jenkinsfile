@@ -12,7 +12,10 @@ def call(Map config = [:]) {
 
        environment {
 			MY_GIT_LATEST_COMMIT_ID = ''
-			DOCKER_IMAGE = ''            
+			DOCKER_IMAGE = ''   
+			SCANNER_HOME = "${tool '{config.SONAR_INSTALL_NAME}'}"          
+		    NEXUS_CREDENTIALS = credentials('nexus-creds')
+			NEXUS_ARTIFACT_VERSION = "${BUILD_ID}-${BUILD_TIMESTAMP}"  
 	   }
 
 	   stages {
@@ -29,7 +32,7 @@ def call(Map config = [:]) {
 	   		stage("JACOCO CODE COVERAGE") {
 	   			steps {
 	   				script {
-	   					if (EXECUTE_JACOCO_STAGE.toLowerCase()?.trim() == "yes") {
+	   					if (config.EXECUTE_JACOCO_STAGE.toLowerCase()?.trim() == "yes") {
 	   						echo "Running JACOCO CODE COVERAGE"
 	   						def jacoco_params = [
             					JACOCO_GROUPID:     config.JACOCO_GROUPID,
@@ -46,7 +49,7 @@ def call(Map config = [:]) {
 		   stage("TRIVY FILE SYSTEM SCAN") {
 			   steps {
 				   script { 
-				   		if (EXECUTE_TRIVY_FS_STAGE.toLowerCase()?.trim() == "yes") {
+				   		if (config.EXECUTE_TRIVY_FS_STAGE.toLowerCase()?.trim() == "yes") {
 				   			echo "Running... TRIVY FILE SYSTEM SCAN"
 					   		def trivy_file_params = [
 					   			MODE:                    "fs",
@@ -54,7 +57,7 @@ def call(Map config = [:]) {
 					   			PROJECT_NAME:            config.PROJECT_NAME,
 					   			COMPONENT:               config.COMPONENT,
 					   			MY_GIT_LATEST_COMMIT_ID: MY_GIT_LATEST_COMMIT_ID,
-					   			OUPUT_REPORT_FORMAT:     config.TRIVY_FILE_SYSTEM_REPORT_FORMAT
+					   			OUTPUT_REPORT_FORMAT:     config.TRIVY_FILE_SYSTEM_REPORT_FORMAT
 					   		]
 					   		trivy_scan(trivy_file_params)
 					   	} else { echo "Skipping...STAGE - TRIVY FILE SYSTEM SCAN" }
@@ -65,11 +68,11 @@ def call(Map config = [:]) {
 		   stage("SONARQUBE SCAN - SAST") {
 		   		steps {
 		   			script {
-		   				if (EXECUTE_SONARSCAN_STAGE.toLowerCase()?.trim() == "yes") {
+		   				if (config.EXECUTE_SONARSCAN_STAGE.toLowerCase()?.trim() == "yes") {
 				   			echo "Running... SONARQUBE SCAN - SAST"
 					   		def sonarqube_params = [
 					   			SONARQUBEAPI: config.SONARQUBEAPI,
-					   			SCANNER_HOME: config.SCANNER_HOME,  
+					   			SCANNER_HOME: SCANNER_HOME,  
 					   			PROJECT_NAME: config.PROJECT_NAME,
 					   			PROJECT_KEY:  config.PROJECT_KEY
 					   		]
@@ -82,9 +85,9 @@ def call(Map config = [:]) {
 		   stage("SONARQUBE QUALITY GATE") {
 		   		steps {
 		   			script {
-		   				if (EXECUTE_SONARSCAN_STAGE.toLowerCase()?.trim() == "yes") {
+		   				if (config.EXECUTE_SONAR_QG_STAGE.toLowerCase()?.trim() == "yes") {
 				   			echo "Running... SONARQUBE QUALITY GATE"
-					   		def sonarqube_params = [ config.TIMEOUT_MINUTES ]				  
+					   		def sonarqube_params = [ TIMEOUT_MINUTES: config.TIMEOUT_MINUTES ]				  
 					   		sonarqubeQG(sonarqube_params)
 					   	} else { echo "Skipping...STAGE - SONARQUBE QUALITY GATE" }
 
@@ -95,7 +98,7 @@ def call(Map config = [:]) {
 		   stage("MAVEN BUILD") {
 		   		steps {
 		   			script {
-		   				if (EXECUTE_MAVEN_STAGE.toLowerCase()?.trim() == "yes") {
+		   				if (config.EXECUTE_MAVEN_STAGE.toLowerCase()?.trim() == "yes") {
 		   					echo "Running... MAVEN BUILD"
 		   					def maven_params = [ MAVEN_SKIP_TESTS: config.MAVEN_SKIP_TESTS ]
 		   					mavenBuild(maven_params)
@@ -107,10 +110,10 @@ def call(Map config = [:]) {
 		   stage("BUILD DOCKER IMAGE") {
 		   		steps {
 		   			script {
-		   				if (EXECUTE_DOCKER_IMAGE_BUILD_STAGE.toLowerCase()?.trim() == "yes") {
+		   				if (config.EXECUTE_DOCKER_IMAGE_BUILD_STAGE.toLowerCase()?.trim() == "yes") {
 		   					echo "Running...BUILD DOCKER IMAGE"
 		   					DOCKER_IMAGE = dockerImageBuild()
-		   					echo "IMAGE BUILT SUCCESSFULLY: ${IMAGE}"
+		   					echo "IMAGE BUILT SUCCESSFULLY: ${DOCKER_IMAGE}"
 		   				} else { echo "Skipping... STAGE - BUILD DOCKER IMAGE" }
 		   			}
 		   		}
@@ -119,7 +122,7 @@ def call(Map config = [:]) {
 		   stage("DOCKER IMAGE SCAN - TRIVY") {
 		   		steps {
 		   			script {
-		   				if (EXECUTE_TRIVY_IMAGE_STAGE.toLowerCase()?.trim() == "yes") {
+		   				if (config.EXECUTE_TRIVY_IMAGE_STAGE.toLowerCase()?.trim() == "yes") {
 		   					echo ("Running...DOCKER IMAGE SCAN - TRIVY")
 		   					def trivy_image_params = [
 					   			MODE:                    "image",
@@ -127,7 +130,7 @@ def call(Map config = [:]) {
 					   			PROJECT_NAME:            config.PROJECT_NAME,
 					   			COMPONENT:               config.COMPONENT,
 					   			MY_GIT_LATEST_COMMIT_ID: MY_GIT_LATEST_COMMIT_ID,
-					   			OUPUT_REPORT_FORMAT:     config.TRIVY_IMAGE_REPORT_FORMAT
+					   			OUTPUT_REPORT_FORMAT:     config.TRIVY_IMAGE_REPORT_FORMAT
 					   		]
 					   		trivy_scan(trivy_image_params)
 					    } else { echo "Skipping... STAGE - DOCKER IMAGE SCAN - TRIVY" }
@@ -138,7 +141,7 @@ def call(Map config = [:]) {
 		   stage("NEXUS ARTIFACT UPLOAD") {
 		   		steps {
 		   			script {
-		   				if (EXECUTE_NEXUS_STAGE.toLowerCase()?.trim() == "yes") {
+		   				if (config.EXECUTE_NEXUS_STAGE.toLowerCase()?.trim() == "yes") {
 		   					echo "Running...NEXUS ARTIFACT UPLOAD"
 		   					def nexusParams = [
 					            NEXUS_VERSION:          config.NEXUS_VERSION,
@@ -146,9 +149,9 @@ def call(Map config = [:]) {
 					            NEXUS_HOST:             config.NEXUS_HOST,
 					            NEXUS_PORT:             config.NEXUS_PORT,
 					            NEXUS_GRP_ID:           config.NEXUS_GRP_ID,
-					            NEXUS_ARTIFACT_VERSION: "${MY_GIT_LATEST_COMMIT_ID}-${config.NEXUS_ARTIFACT_VERSION}",
+					            NEXUS_ARTIFACT_VERSION: "${MY_GIT_LATEST_COMMIT_ID}-${NEXUS_ARTIFACT_VERSION}",
 					            NEXUS_CREDENTIALS_ID:   config.NEXUS_CREDENTIALS_ID,
-					            NEXUS_BASE_REPO:        config.NEXUS_BASE_REPO
+								NEXUS_BASE_REPO:        config.NEXUS_BASE_REPO
           					]
           					nexusUpload(nexusParams)
 		   				}
@@ -160,7 +163,7 @@ def call(Map config = [:]) {
 		   stage("DOCKER IMAGE UPLOAD - DOCKER HUB") {
 		   		steps {
 		   			script {
-                        if (EXECUTE_DOCKER_HUB_PUSH_STAGE.toLowerCase()?.trim() == "yes") {
+                        if (config.EXECUTE_DOCKER_HUB_PUSH_STAGE.toLowerCase()?.trim() == "yes") {
 		   					echo "Running...DOCKER IMAGE UPLOAD - DOCKER HUB"
 		   					def dockerhub_upload_params = [
 		   						DOCKER_IMAGE:              DOCKER_IMAGE,
@@ -176,7 +179,7 @@ def call(Map config = [:]) {
 		   stage("DOCKER IMAGE UPLOAD - ECR") {
 		   		steps {
 		   			script {
-		   				if (EXECUTE_DOCKER_HUB_PUSH_STAGE.toLowerCase()?.trim() == "yes") {
+		   				if (config.EXECUTE_ECR_PUSH_STAGE.toLowerCase()?.trim() == "yes") {
 		   				echo "Running...DOCKER IMAGE UPLOAD - ECR"
 		   				def ecr_upload_params = [
 		   						DOCKER_IMAGE:       DOCKER_IMAGE,
@@ -196,19 +199,19 @@ def call(Map config = [:]) {
 	   post {
 	   		always {
 	   			script {
-	   				if (EXECUTE_EMAIL_STAGE.toLowerCase()?.trim() == "yes") {
+	   				if (config.EXECUTE_EMAIL_STAGE.toLowerCase()?.trim() == "yes") {
 	   					echo "Sending Email"
 	   					def emailParams = [
-			                 JOB_NAME:        config.JOB_NAME,
-			                 BUILD_NUMBER:    config.BUILD_NUMBER,
-			                 BUILD_URL:       config.BUILD_URL,
-			                 BRANCH_NAME:     config.BRANCH_NAME,
+			                 JOB_NAME:        env.JOB_NAME,
+			                 BUILD_NUMBER:    env.BUILD_NUMBER,
+			                 BUILD_URL:       env.BUILD_URL,
+			                 BRANCH_NAME:     env.BRANCH_NAME,
 			                 PIPELINE_STATUS: currentBuild.currentResult,
 			                 DURATION:        currentBuild.durationString,
 			                 FROM_MAIL:       config.FROM_MAIL,
 			                 TO_MAIL:         config.TO_MAIL,
 			                 REPLY_TO_MAIL:   config.REPLY_TO_MAIL,
-			                 CC_MAIL:         env.CC_MAIL,
+			                 CC_MAIL:         config.CC_MAIL,
 			                 BCC_MAIL:        config.BCC_MAIL,
 			                 ATTACHMENTS:     config.ATTACHMENTS                      // "trivy-reports/*, owasp-reports/*"
 			            ]               
