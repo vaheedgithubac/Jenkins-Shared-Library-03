@@ -14,8 +14,8 @@ def call(Map config = [:]) {
 			MY_GIT_LATEST_COMMIT_ID = ''
 			DOCKER_IMAGE = ''   
 		    // NEXUS_CREDENTIALS = ${credentials(config.NEXUS_CREDENTIALS_ID)} ?: ""
-		    NEXUS_USER = ''
-		    NEXUS_PASSWORD = ''
+		    // NEXUS_USER = ''
+		    // NEXUS_PASSWORD = ''
 			NEXUS_ARTIFACT_VERSION = "${BUILD_ID}-${BUILD_TIMESTAMP}"  
 	   }
 
@@ -151,8 +151,8 @@ def call(Map config = [:]) {
                             		passwordVariable: 'nexus_password'
                             	)]) {
                             			//Assign to ENV variables
-                            			NEXUS_USER = nexus_user
-                            			NEXUS_PASSWORD = nexus_password
+                            			env.NEXUS_USER = nexus_user
+                            			env.NEXUS_PASSWORD = nexus_password
                                	}
                             }
                             echo " NEXUS_USER: ${nexus_user} NEXUS_PASSWORD: ${nexus_password}"
@@ -168,7 +168,7 @@ def call(Map config = [:]) {
 								NEXUS_BASE_REPO:        config.NEXUS_BASE_REPO
           					]
           					nexusUpload(nexusParams)
-		   				}  else { echo "Skipping... STAGE - NEXUS ARTIFACT UPLOAD MY_GIT_LATEST_COMMIT_ID: ${MY_GIT_LATEST_COMMIT_ID} NEXUS_USER: ${NEXUS_USER} NEXUS_PASSWORD: ${NEXUS_PASSWORD}"}	
+		   				}  else { echo "Skipping... STAGE - NEXUS ARTIFACT UPLOAD MY_GIT_LATEST_COMMIT_ID: ${MY_GIT_LATEST_COMMIT_ID} NEXUS_USER: ${env.NEXUS_USER} NEXUS_PASSWORD: ${env.NEXUS_PASSWORD}"}	
 		   			}
 		   		}
 		    }
