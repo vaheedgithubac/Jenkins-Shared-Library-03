@@ -6,10 +6,10 @@ def call(Map config = [:]) {
     def required = [
         "MODE",
         "TARGET",
+        "OUPUT_REPORT_FORMAT",
         "PROJECT_NAME",
         "COMPONENT",
-        "MY_GIT_LATEST_COMMIT_ID",
-        "OUPUT_REPORT_FORMAT"
+        "MY_GIT_LATEST_COMMIT_ID"
     ]
 
     required.each { key ->
