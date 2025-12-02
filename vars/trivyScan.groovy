@@ -1,12 +1,10 @@
 def call(Map config = [:]) {
 
-    // --------------------------------
-    // 1️⃣ Validate required parameters
-    // --------------------------------
-    def required = [
+    def required_fs = [
         "MODE",
         "TARGET",
-        "OUTPUT_REPORT_FORMAT",
+        "SCAN_FORMAT",
+        "OUTPUT_FORMAT",
         "PROJECT_NAME",
         "COMPONENT",
         "MY_GIT_LATEST_COMMIT_ID"
@@ -20,20 +18,19 @@ def call(Map config = [:]) {
 
     def mode                 = config.MODE
     def target               = config.TARGET
+    def scan_format          = config.SCAN_FORMAT
+    def output_format        = config.OUTPUT_FORMAT
     def project_name         = config.PROJECT_NAME
     def component            = config.COMPONENT
     def git_latest_commit_id = config.MY_GIT_LATEST_COMMIT_ID
-    def output_report_format = config.OUTPUT_REPORT_FORMAT
-
-    // -----------------------------------
-    // 2️⃣ Determine proper file extension
-    // -----------------------------------
+    
     def ext = [
         "table": "txt",
         "json" : "json",
         "sarif": "sarif",
+        "xml"  : "xml",
         "yaml" : "yaml"
-    ][output_report_format] ?: output_report_format  // fallback to 'output_report_format' if unknown
+    ][scan_format] ?: scan_format  // fallback to 'output_report_format' if unknown
     
     def output_report = ""
     def outDir        = "trivy-reports"
@@ -43,29 +40,22 @@ def call(Map config = [:]) {
         output_report = "${outDir}/${project_name}-${component}-${mode}-${git_latest_commit_id}.${ext}"   // trivy-reports/expense-backend-fs-7drt46y.html
     }
     else if (mode.toLowerCase()?.trim() == "image") {
-        //def safeTarget = target.replaceAll(/[:\/]/, "-")  // replaces ":"" or "/"" with "-"
         output_report = "${outDir}/${project_name}-${component}-${mode}-${git_latest_commit_id}.${ext}"   // trivy-reports/expense-backend-image-7drt46y.html
     }
     else {
         error "❌ Invalid mode: Choose 'fs' or 'image'"
     }
 
-    // -------------------------
-    // 3️⃣ Log info
-    // -------------------------
     echo "🛡 Running Trivy scan"
     echo "📄 Output: '${output_report}'"
     echo "🎯 Target: '${target}'"
 
-    // ----------------------------------------------------
-    // 4️⃣ Run Trivy safely (handle any special characters)
-    // ----------------------------------------------------
+    
     sh """
-            trivy ${mode}  \
-            --format ${output_report_format} \
+            trivy ${mode} ${target} \
+            --format ${scan_format} \
             --output ${output_report} \
-            --severity MEDIUM,HIGH,CRITICAL \
-            ${target}   
+            --severity MEDIUM,HIGH,CRITICAL  
     """
     echo "✅ Trivy scan completed successfully. Report stored at: '${env.WORKSPACE}/${output_report}'"
 }
