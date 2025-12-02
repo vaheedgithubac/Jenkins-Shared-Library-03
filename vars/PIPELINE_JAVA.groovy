@@ -155,7 +155,7 @@ def call(Map config = [:]) {
                             			env.NEXUS_PASSWORD = nexus_password
                                	}
                             }
-                            echo " NEXUS_USER: ${nexus_user} NEXUS_PASSWORD: ${nexus_password}"
+                            // echo " NEXUS_USER: ${nexus_user} NEXUS_PASSWORD: ${nexus_password}"
                             echo "Running...NEXUS ARTIFACT UPLOAD"
 		   					def nexusParams = [
 					            NEXUS_VERSION:          config.NEXUS_VERSION,
@@ -184,7 +184,7 @@ def call(Map config = [:]) {
 		   						DOCKER_HUB_CREDENTIALS_ID: config.DOCKER_HUB_CREDENTIALS_ID
 		   					]
 		   					dockerPush(dockerhub_upload_params)
-		   				} else { echo "Skipping... STAGE - DOCKER IMAGE UPLOAD - DOCKER HUB MY_GIT_LATEST_COMMIT_ID: ${MY_GIT_LATEST_COMMIT_ID} NEXUS_USER: ${env.NEXUS_USER} NEXUS_PASSWORD: ${env.NEXUS_PASSWORD}" }
+		   				} else { echo "Skipping... STAGE - DOCKER IMAGE UPLOAD - DOCKER HUB" }
 		   			}
 		   		}
 		    }
