@@ -8,7 +8,6 @@ def call(Map config = [:]) {
         	timeout(time: 30, unit: 'MINUTES')
         	timestamps() 
         	ansiColor('xterm')                 // plugin: "AnsiColor"
-        	cleanWs()
         }
 
        environment {
