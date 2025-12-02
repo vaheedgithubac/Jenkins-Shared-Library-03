@@ -16,7 +16,7 @@ def call(Map config = [:]) {
 	   }
 
 	   stages {
-	   		stage('Init') { steps {cleanWs() } }
+	   		// stage('Init') { steps {cleanWs() } }
 	   		stage("SET AND PRINT LATEST COMMIT ID") {
 	   			steps {
 					script {
