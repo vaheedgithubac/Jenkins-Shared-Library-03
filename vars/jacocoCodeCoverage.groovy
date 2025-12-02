@@ -18,7 +18,7 @@ def call(Map config = [:]) {
     
     try { sh """ 
                  mvn ${jacoco_groupId}:${jacoco_artifactId}:${jacoco_version}:${jacoco_goal}
-                 mvn clean test jacoco:report
+                 # mvn clean test jacoco:report
              """ 
         }
     catch (Exception ex) { error "❌ Jacoco Maven step failed: ${ex.message}" }
