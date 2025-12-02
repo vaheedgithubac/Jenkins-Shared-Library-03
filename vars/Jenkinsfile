@@ -57,7 +57,7 @@ def call(Map config = [:]) {
 					   			PROJECT_NAME:            config.PROJECT_NAME,
 					   			COMPONENT:               config.COMPONENT,
 					   			MY_GIT_LATEST_COMMIT_ID: MY_GIT_LATEST_COMMIT_ID,
-					   			OUTPUT_REPORT_FORMAT:     config.TRIVY_FILE_SYSTEM_REPORT_FORMAT
+					   			OUTPUT_REPORT_FORMAT:    config.TRIVY_FILE_SYSTEM_REPORT_FORMAT
 					   		]
 					   		trivy_scan(trivy_file_params)
 					   	} else { echo "Skipping...STAGE - TRIVY FILE SYSTEM SCAN" }
@@ -130,7 +130,7 @@ def call(Map config = [:]) {
 					   			PROJECT_NAME:            config.PROJECT_NAME,
 					   			COMPONENT:               config.COMPONENT,
 					   			MY_GIT_LATEST_COMMIT_ID: MY_GIT_LATEST_COMMIT_ID,
-					   			OUTPUT_REPORT_FORMAT:     config.TRIVY_IMAGE_REPORT_FORMAT
+					   			OUTPUT_REPORT_FORMAT:    config.TRIVY_IMAGE_REPORT_FORMAT
 					   		]
 					   		trivy_scan(trivy_image_params)
 					    } else { echo "Skipping... STAGE - DOCKER IMAGE SCAN - TRIVY" }
