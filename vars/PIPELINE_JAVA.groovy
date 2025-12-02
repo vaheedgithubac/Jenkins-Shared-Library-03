@@ -13,7 +13,7 @@ def call(Map config = [:]) {
 
        environment {
 			DOCKER_IMAGE = ''   
-		    NEXUS_ARTIFACT_VERSION = "${BUILD_ID}-${BUILD_TIMESTAMP}"  
+		    NEXUS_ARTIFACT_VERSION = "${BUILD_ID}-${BUILD_TIMESTAMP}"  // Requires Build Timestamp plugin
 	   }
 
 	   stages {
