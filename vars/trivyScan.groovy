@@ -1,6 +1,6 @@
 def call(Map config = [:]) {
 
-    def required_fs = [
+    def required = [
         "MODE",
         "TARGET",
         "SCAN_FORMAT",
