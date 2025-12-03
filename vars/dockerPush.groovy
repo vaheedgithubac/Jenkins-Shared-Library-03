@@ -42,7 +42,7 @@ def call(Map config = [:]) {
             echo "✅ Logged out from Docker Hub Successfully"
         """
     }
-}
+
 
    /*
    withCredentials([usernamePassword(
