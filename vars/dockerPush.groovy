@@ -19,7 +19,7 @@ def call(Map config = [:]) {
             sh """
                 echo "🔖 Tagging Docker Image"  #docker.io/dockeruser/expense-backend:5d4ret
                 // docker tag ${projectName}-${component}:${imageTag} ${dockerUser}/${projectName}-${component}:${imageTag}
-                docker tag ${dockerImage} ${dockerUser}/{dockerImage}
+                docker tag ${dockerImage} ${dockerUser}/${dockerImage}
                                         
                 echo "🔐 Logging into Docker Hub as '${dockerUser}'"
                 set +x
@@ -28,7 +28,7 @@ def call(Map config = [:]) {
 
                 echo "🚀 Pushing Docker Image to Docker Hub"
                 // docker push ${dockerUser}/${projectName}-${component}:${imageTag}
-                docker push ${dockerUser}/{dockerImage}
+                docker push ${dockerUser}/${dockerImage}
 
                 echo "✅ Pushed Docker Image to Docker Hub Successfully"
 
