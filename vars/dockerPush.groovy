@@ -19,11 +19,9 @@ def call(Map config = [:]) {
         sh """
             echo "🔖 Tagging Docker Image"
             docker tag $dockerImage    $DOCKER_USER/$dockerImage 
-        """
-
-        sh '''                          
+                                  
             echo "🔐 Logging into Docker Hub as '$DOCKER_USER'"
-            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+            echo '$DOCKER_PASS' | docker login -u $DOCKER_USER --password-stdin
 
             echo "🚀 Pushing Docker Image to Docker Hub"
             docker push $DOCKER_USER/$dockerImage   
@@ -32,7 +30,7 @@ def call(Map config = [:]) {
 
             docker logout
             echo "✅ Logged out from Docker Hub Successfully"
-        '''
+        """
     }
 
 }
