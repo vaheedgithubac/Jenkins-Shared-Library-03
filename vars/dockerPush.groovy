@@ -25,8 +25,10 @@ def call(Map config = [:]) {
 
         // Login to Docker Hub
         sh """
+            set +x
             echo "🔐 Logging into Docker Hub as ${DOCKER_USER}"
             echo "\${DOCKER_PASS}" | docker login -u "\${DOCKER_USER}" --password-stdin
+            set -x
         """
 
         // Push the image
