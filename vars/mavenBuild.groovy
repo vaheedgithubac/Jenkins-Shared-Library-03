@@ -1,6 +1,6 @@
 def call(Map config = [:]) {
 
-    def required = ["maven_skip_tests"]
+    def required = ["MAVEN_SKIP_TESTS"]
     required.each { key ->
         if (!config[key]) {
             error "❌ MAVEN: Missing required parameter '${key}'"
@@ -8,7 +8,7 @@ def call(Map config = [:]) {
     }
 
     // Normalize skipTests
-    def maven_skip_tests = (config.maven_skip_tests in [true, 'true', "true"]) ? 'true' : 'false'
+    def maven_skip_tests = (config.MAVEN_SKIP_TESTS in [true, 'true', "true"]) ? 'true' : 'false'
     def maven_goals = config.maven_goals ?: 'clean package'
 
     echo "Running Maven: ${maven_goals} -DskipTests=${maven_skip_tests}"
