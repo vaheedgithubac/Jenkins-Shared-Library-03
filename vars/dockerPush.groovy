@@ -18,13 +18,13 @@ def call(Map config = [:]) {
     )]) {
         sh '''
             echo "🔖 Tagging Docker Image"
-            docker tag $DOCKER_IMAGE $DOCKER_USER/$DOCKER_IMAGE
+            docker tag $dockerImage    $DOCKER_USER/$dockerImage   
                                         
             echo "🔐 Logging into Docker Hub as '$DOCKER_USER'"
             echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
 
             echo "🚀 Pushing Docker Image to Docker Hub"
-            docker push $DOCKER_USER/$DOCKER_IMAGE
+            docker push $DOCKER_USER/$dockerImage   
 
             echo "✅ Pushed Docker Image to Docker Hub Successfully"
 
