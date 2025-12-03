@@ -11,28 +11,26 @@ def call(Map config = [:]) {
     def credentialsId = config.DOCKER_HUB_CREDENTIALS_ID
     def dockerRepoUri = config.DOCKER_REPO_URI ?: "docker.io"   
 
-    withCredentials([usernamePassword(
-        credentialsId: credentialsId, 
-        usernameVariable: 'dockerUser', 
-        passwordVariable: 'dockerPass'  
+   withCredentials([usernamePassword(
+    credentialsId: credentialsId, 
+    usernameVariable: 'DOCKER_USER', 
+    passwordVariable: 'DOCKER_PASS'
     )]) {
-            sh """
-                echo "🔖 Tagging Docker Image"  #docker.io/dockeruser/expense-backend:5d4ret
-                docker tag ${dockerImage} ${dockerUser}/${dockerImage}
+        sh '''
+            echo "🔖 Tagging Docker Image"
+            docker tag $DOCKER_IMAGE $DOCKER_USER/$DOCKER_IMAGE
                                         
-                echo "🔐 Logging into Docker Hub as '${dockerUser}'"
-                set +x
-                echo "${dockerPass}" | docker login -u "${dockerUser}" --password-stdin
-                set -x
+            echo "🔐 Logging into Docker Hub as '$DOCKER_USER'"
+            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
 
-                echo "🚀 Pushing Docker Image to Docker Hub"
-                docker push ${dockerUser}/${dockerImage}
+            echo "🚀 Pushing Docker Image to Docker Hub"
+            docker push $DOCKER_USER/$DOCKER_IMAGE
 
-                echo "✅ Pushed Docker Image to Docker Hub Successfully"
+            echo "✅ Pushed Docker Image to Docker Hub Successfully"
 
-                # Logout and final confirmation
-                docker logout
-                echo "✅ Logged out from Docker Hub Successfully"
-            """    
-        }
+            docker logout
+            echo "✅ Logged out from Docker Hub Successfully"
+        '''
+    }
+
 }
