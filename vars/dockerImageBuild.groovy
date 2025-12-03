@@ -16,5 +16,5 @@ def call(Map config = [:]) {
   sh "docker build . -t ${dockerImage}"
   echo "✅ Docker Image successfully built: ${dockerImage}"
 
-  return ${dockerImage}
+  return dockerImage
 }
