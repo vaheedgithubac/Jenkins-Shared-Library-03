@@ -24,7 +24,7 @@ def call(Map config = [:]) {
             set -x
 
             echo "Pushing docker image to ECR Repo"
-            docker push ${dockerImage} ${ecrRepoUri}/${dockerImage}
+            docker push ${ecrRepoUri}/${dockerImage}
             # docker push ${ecrRepoUri}/${projectName}-${component}:${imageTag}
             
             echo "✅ Pushed Docker Image to ECR Successfully"
