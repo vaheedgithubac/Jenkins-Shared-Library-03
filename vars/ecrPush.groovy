@@ -30,7 +30,7 @@ def call(Map config = [:]) {
             echo "✅ Pushed Docker Image to ECR Successfully"
 
             # Logout and final confirmation
-            ecr logout ${ecrRepoUri}"
+            ecr logout "${ecrRepoUri}"
             echo "✅ Logged out from ECR Successfully"
         """
     } 
