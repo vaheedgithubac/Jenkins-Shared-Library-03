@@ -56,6 +56,7 @@ def call(Map config = [:]) {
 					   			TARGET:                  config.TRIVY_FS_TARGET,
 								SCAN_FORMAT:             config.TRIVY_FS_SCAN_FORMAT,
 								OUTPUT_FORMAT:           config.TRIVY_FS_OUTPUT_FORMAT,
+								SEVERITY:                config.TRIVY_FS_SEVERITY,
 					   			PROJECT_NAME:            config.PROJECT_NAME,
 					   			COMPONENT:               config.COMPONENT,
 					   			MY_GIT_LATEST_COMMIT_ID: env.MY_GIT_LATEST_COMMIT_ID	
@@ -130,6 +131,7 @@ def call(Map config = [:]) {
 					   			TARGET:                  DOCKER_IMAGE,
 								SCAN_FORMAT:             config.TRIVY_IMAGE_SCAN_FORMAT,
 								OUTPUT_FORMAT:           config.TRIVY_IMAGE_OUTPUT_FORMAT,
+								SEVERITY:                config.TRIVY_IMAGE_SEVERITY,
 					   			PROJECT_NAME:            config.PROJECT_NAME,
 					   			COMPONENT:               config.COMPONENT,
 					   			MY_GIT_LATEST_COMMIT_ID: env.MY_GIT_LATEST_COMMIT_ID
