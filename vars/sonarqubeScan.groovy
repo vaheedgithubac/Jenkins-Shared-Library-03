@@ -22,5 +22,5 @@ def call(Map config = [:]) {
             -Dsonar.projectKey='${projectKey}' -X
         """
     }
-  echo ✅ Sonarqube Scan completed Successfully"
+  echo "✅ Sonarqube Scan completed Successfully"
 }
