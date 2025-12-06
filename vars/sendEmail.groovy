@@ -5,7 +5,7 @@ def call(Map config = [:]) {
       "BUILD_URL",
       "BRANCH_NAME",
       "PIPELINE_STATUS",
-      "DURATION"
+      "DURATION",
       "FROM_MAIL", 
       "TO_MAIL", 
       "REPLY_TO_MAIL",
